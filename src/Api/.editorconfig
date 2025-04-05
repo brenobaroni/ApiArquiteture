@@ -1,0 +1,14 @@
+# .editorconfig file
+root = true
+
+[*.cs]
+# C# files
+dotnet_naming_rule.properties_should_be_snake_case.severity = error
+dotnet_naming_rule.properties_should_be_snake_case.symbols = properties
+dotnet_naming_rule.properties_should_be_snake_case.style = snake_case_style
+
+dotnet_naming_symbols.properties.applicable_kinds = property
+dotnet_naming_symbols.properties.applicable_accessibilities = *
+dotnet_naming_symbols.properties.required_modifiers = *
+
+dotnet_naming_style.snake_case_style.capitalization = snake_case
