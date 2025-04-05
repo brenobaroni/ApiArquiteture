@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Api.Domain.Comands
+namespace Api.Domain.Commands
 {
-    internal class CreateCustomerCommand
+    internal class CustomerCommand
     {
     }
 }

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Api.Application\Api.Application.csproj" />
     <ProjectReference Include="..\Api.Infra\Api.Data.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,10 @@
+using Api.Application.Handlers;
 using Api.Data;
 using Api.Data.CompiledModels;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using System.Text.Json.Serialization;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,13 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
+});
+#endregion
+
+#region Events/Handlers
+builder.Host.UseWolverine(opts =>
+{
+    opts.Discovery.IncludeType(typeof(ProductHandlers));
 });
 #endregion
 

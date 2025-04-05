@@ -1,11 +1,6 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentValidation;
 
-namespace Api.Domain.Comands
+namespace Api.Domain.Commands
 {
     public class CreateSaleValidator : AbstractValidator<CreateSaleCommand>
     {
@@ -32,7 +27,7 @@ namespace Api.Domain.Comands
     {
         public int customer_id { get; init; }
         public List<CreateSaleItemCommand> items { get; init; } = new List<CreateSaleItemCommand>()!;
-    };
+    }
 
     public record CreateSaleItemCommand
     {
@@ -41,4 +36,14 @@ namespace Api.Domain.Comands
         public int quantity { get; set; }
         public decimal price { get; set; }
     }
+
+    public record class DeleteSaleCommand(int id);
+    public record class GetSaleQuery(int id);
+    public record class GetAllSalesQuery();
 }
+
+namespace Api.Domain.Queries
+{
+    public record class GetSaleQuery(int id);
+    public record class GetAllSalesQuery();
+} 

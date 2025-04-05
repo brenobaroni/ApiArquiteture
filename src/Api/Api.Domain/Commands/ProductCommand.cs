@@ -1,13 +1,8 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Api.Domain.Comands
+namespace Api.Domain.Commands
 {
-    public class CreateProductValidator : AbstractValidator<CreateProductCommand>
+    public class CreateProductValidator : AbstractValidator<ProductCommand>
     {
         public CreateProductValidator()
         {
@@ -16,7 +11,7 @@ namespace Api.Domain.Comands
         }
     }
 
-    public record class CreateProductCommand
+    public record class ProductCommand
     {
         public int name { get; init; }
         public float price { get; init; }
