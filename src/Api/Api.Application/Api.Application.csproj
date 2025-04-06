@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Api.Infra\Api.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
-
 </Project>

@@ -17,6 +17,13 @@ namespace Api.Web.Controllers
             _bus = bus;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] CreateSaleCommand command)
+        {
+            var sale = await _bus.InvokeAsync<Api.Domain.Entities.Sale>(command);
+            return CreatedAtAction(nameof(Get), new { id = sale.id }, sale);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {

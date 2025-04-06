@@ -18,6 +18,7 @@ namespace Api.Domain.Commands
         {
             RuleFor(x => x.product_id).NotEmpty().WithMessage("Product ID is required.");
             RuleFor(x => x.quantity).NotEmpty().WithMessage("Quantity is required.");
+            RuleFor(x => x.quantity).LessThanOrEqualTo(20).WithMessage("Cannot sell more than 20 identical items.");
             RuleFor(x => x.price).NotEmpty().WithMessage("Price is required.");
             RuleFor(x => x.price).GreaterThan(0).WithMessage("Price must be greater than zero.");
         }
@@ -34,12 +35,33 @@ namespace Api.Domain.Commands
         public int id { get; set; }
         public int product_id { get; set; }
         public int quantity { get; set; }
-        public decimal price { get; set; }
+        public float price { get; set; }
+
+
+        public float CalculateDiscount()
+        {
+            if (quantity < 4)
+                return 0;
+
+            if (quantity > 20)
+                throw new InvalidOperationException("Cannot sell more than 20 identical items");
+
+            if (quantity >= 10 && quantity <= 20)
+                return price * quantity * 0.2f; // 20% discount
+
+            if (quantity >= 4)
+                return price * quantity * 0.1f; // 10% discount
+
+            return 0;
+        }
+
+        public float CalculateTotal()
+        {
+            return (price * quantity) - CalculateDiscount();
+        }
     }
 
     public record class DeleteSaleCommand(int id);
-    public record class GetSaleQuery(int id);
-    public record class GetAllSalesQuery();
 }
 
 namespace Api.Domain.Queries

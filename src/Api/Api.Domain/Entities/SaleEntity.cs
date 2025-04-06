@@ -15,5 +15,6 @@
 
         public virtual Sale sale { get; set; } = default!;
         public virtual Product product { get; set; } = default!;
+        
     }
 }

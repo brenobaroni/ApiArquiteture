@@ -10,6 +10,33 @@ namespace Api.Application.Handlers
     public static class SaleHandlers
     {
         [WolverineHandler]
+        public static async Task<Sale> Handle(CreateSaleCommand command, AppDbContext context)
+        {
+            var sale = new Sale
+            {
+                create_at = DateTime.UtcNow,
+                sale_items = command.items.Select(item => new SaleItem
+                {
+                    product_id = item.product_id,
+                    quantity = item.quantity,
+                    price = item.CalculateTotal(),
+                }).ToList()
+            };
+
+            foreach (var item in sale.sale_items)
+            {
+                if (item.quantity > 20)
+                {
+                    throw new InvalidOperationException($"Cannot sell more than 20 identical items. Product ID: {item.product_id}");
+                }
+            }
+            await context.Sales.AddAsync(sale);
+            await context.SaveChangesAsync();
+
+            return sale;
+        }
+
+        [WolverineHandler]
         public static async Task<Sale?> Handle(GetSaleQuery query, AppDbContext context)
         {
             return await context.Sales
