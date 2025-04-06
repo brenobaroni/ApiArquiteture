@@ -23,13 +23,6 @@ namespace Api.Application.Handlers
                 }).ToList()
             };
 
-            foreach (var item in sale.sale_items)
-            {
-                if (item.quantity > 20)
-                {
-                    throw new InvalidOperationException($"Cannot sell more than 20 identical items. Product ID: {item.product_id}");
-                }
-            }
             await context.Sales.AddAsync(sale);
             await context.SaveChangesAsync();
 
