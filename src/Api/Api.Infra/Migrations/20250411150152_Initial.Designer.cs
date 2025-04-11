@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250405224240_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20250411150152_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,11 +28,9 @@ namespace Api.Data.Migrations
 
             modelBuilder.Entity("Api.Domain.Entities.Customer", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("create_at")
                         .HasColumnType("timestamp with time zone");
@@ -51,20 +49,31 @@ namespace Api.Data.Migrations
 
             modelBuilder.Entity("Api.Domain.Entities.Product", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                    b.Property<string>("category")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("create_at")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("name")
-                        .HasColumnType("integer");
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<float>("price")
-                        .HasColumnType("real");
+                    b.Property<string>("image")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("price")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("update_at")
                         .HasColumnType("timestamp with time zone");
@@ -76,14 +85,31 @@ namespace Api.Data.Migrations
 
             modelBuilder.Entity("Api.Domain.Entities.Sale", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+                    b.Property<Guid>("branch_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("cancelled")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("create_at")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("customer_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("sale_date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("sale_number")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("total_amount")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime?>("update_at")
                         .HasColumnType("timestamp with time zone");
@@ -95,20 +121,35 @@ namespace Api.Data.Migrations
 
             modelBuilder.Entity("Api.Domain.Entities.SaleItem", b =>
                 {
-                    b.Property<int>("id")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("id")
+                        .HasColumnType("uuid");
 
-                    b.Property<float>("price")
-                        .HasColumnType("real");
+                    b.Property<DateTime>("create_at")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("product_id")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("discount")
+                        .HasColumnType("numeric");
+
+                    b.Property<bool>("is_cancelled")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("product_id")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("quantity")
                         .HasColumnType("integer");
 
-                    b.Property<int>("sale_id")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("sale_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("total")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("unit_price")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("update_at")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("id");
 
@@ -120,7 +161,7 @@ namespace Api.Data.Migrations
             modelBuilder.Entity("Api.Domain.Entities.SaleItem", b =>
                 {
                     b.HasOne("Api.Domain.Entities.Sale", "sale")
-                        .WithMany("sale_items")
+                        .WithMany("items")
                         .HasForeignKey("id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -143,7 +184,7 @@ namespace Api.Data.Migrations
 
             modelBuilder.Entity("Api.Domain.Entities.Sale", b =>
                 {
-                    b.Navigation("sale_items");
+                    b.Navigation("items");
                 });
 #pragma warning restore 612, 618
         }

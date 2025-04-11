@@ -14,8 +14,11 @@ namespace Api.Application.Handlers
         {
             var product = new Product
             {
-                name = command.name,
+                title = "Product Name",
+                description = command.description,
+                category = command.category,
                 price = command.price,
+                image = command.image,
                 create_at = DateTime.UtcNow
             };
 

@@ -1,0 +1,59 @@
+name: sales
+services:
+    gateway:
+      container_name: ocelot-gateway
+      build:
+        context: ./src/Gateway
+        dockerfile: Dockerfile
+      environment:
+      - ASPNETCORE_URLS=http://+:7777
+      ports:
+      - "7777:7777"
+      expose:
+        - "7777:7777"
+      deploy:
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        resources:
+          limits:
+            cpus: '1'
+            memory: 512M
+          reservations:
+            cpus: '0.25'
+            memory: 256M
+      networks:
+        - sales-network
+    api:
+      container_name: sales-api
+      build:
+        context: ./src/Api
+        dockerfile: Dockerfile
+      environment:
+      - ASPNETCORE_URLS=http://sales-api:5055
+      ports:
+      - "5055:5055"
+      expose:
+        - "5055:5055"
+      deploy:
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        resources:
+          limits:
+            cpus: '1'
+            memory: 512M
+          reservations:
+            cpus: '0.25'
+            memory: 256M
+      networks:
+        - sales-network
+
+
+networks:
+  sales-network:
+    name: sales-network

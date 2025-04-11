@@ -1,3 +1,4 @@
+using Api.Application.Events;
 using Api.Application.Handlers;
 using Api.Data;
 using Api.Data.CompiledModels;
@@ -38,6 +39,8 @@ builder.Services.AddCors(options =>
 builder.Host.UseWolverine(opts =>
 {
     opts.Discovery.IncludeType(typeof(ProductHandlers));
+    opts.Discovery.IncludeType(typeof(SaleHandlers));
+    opts.Discovery.IncludeType(typeof(SaleEvents));
 });
 #endregion
 

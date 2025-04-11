@@ -20,19 +20,35 @@ namespace Api.Data.CompiledModels
                 "Api.Domain.Entities.Sale",
                 typeof(Sale),
                 baseEntityType,
-                propertyCount: 3,
+                propertyCount: 9,
                 navigationCount: 1,
                 keyCount: 1);
 
             var id = runtimeEntityType.AddProperty(
                 "id",
-                typeof(int),
+                typeof(Guid),
                 propertyInfo: typeof(Base).GetProperty("id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(Base).GetField("<id>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 valueGenerated: ValueGenerated.OnAdd,
                 afterSaveBehavior: PropertySaveBehavior.Throw,
-                sentinel: 0);
-            id.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                sentinel: new Guid("00000000-0000-0000-0000-000000000000"));
+            id.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var branch_id = runtimeEntityType.AddProperty(
+                "branch_id",
+                typeof(Guid),
+                propertyInfo: typeof(Sale).GetProperty("branch_id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Sale).GetField("<branch_id>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                sentinel: new Guid("00000000-0000-0000-0000-000000000000"));
+            branch_id.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var cancelled = runtimeEntityType.AddProperty(
+                "cancelled",
+                typeof(bool),
+                propertyInfo: typeof(Sale).GetProperty("cancelled", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Sale).GetField("<cancelled>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                sentinel: false);
+            cancelled.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
             var create_at = runtimeEntityType.AddProperty(
                 "create_at",
@@ -41,6 +57,37 @@ namespace Api.Data.CompiledModels
                 fieldInfo: typeof(BaseData).GetField("<create_at>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 sentinel: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
             create_at.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var customer_id = runtimeEntityType.AddProperty(
+                "customer_id",
+                typeof(Guid),
+                propertyInfo: typeof(Sale).GetProperty("customer_id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Sale).GetField("<customer_id>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                sentinel: new Guid("00000000-0000-0000-0000-000000000000"));
+            customer_id.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var sale_date = runtimeEntityType.AddProperty(
+                "sale_date",
+                typeof(DateTime),
+                propertyInfo: typeof(Sale).GetProperty("sale_date", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Sale).GetField("<sale_date>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                sentinel: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+            sale_date.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var sale_number = runtimeEntityType.AddProperty(
+                "sale_number",
+                typeof(string),
+                propertyInfo: typeof(Sale).GetProperty("sale_number", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Sale).GetField("<sale_number>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            sale_number.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var total_amount = runtimeEntityType.AddProperty(
+                "total_amount",
+                typeof(decimal),
+                propertyInfo: typeof(Sale).GetProperty("total_amount", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Sale).GetField("<total_amount>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                sentinel: 0m);
+            total_amount.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
             var update_at = runtimeEntityType.AddProperty(
                 "update_at",

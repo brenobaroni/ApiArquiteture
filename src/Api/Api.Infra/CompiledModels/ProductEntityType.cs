@@ -20,19 +20,26 @@ namespace Api.Data.CompiledModels
                 "Api.Domain.Entities.Product",
                 typeof(Product),
                 baseEntityType,
-                propertyCount: 5,
+                propertyCount: 8,
                 navigationCount: 1,
                 keyCount: 1);
 
             var id = runtimeEntityType.AddProperty(
                 "id",
-                typeof(int),
+                typeof(Guid),
                 propertyInfo: typeof(Base).GetProperty("id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(Base).GetField("<id>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 valueGenerated: ValueGenerated.OnAdd,
                 afterSaveBehavior: PropertySaveBehavior.Throw,
-                sentinel: 0);
-            id.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                sentinel: new Guid("00000000-0000-0000-0000-000000000000"));
+            id.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var category = runtimeEntityType.AddProperty(
+                "category",
+                typeof(string),
+                propertyInfo: typeof(Product).GetProperty("category", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Product).GetField("<category>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            category.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
             var create_at = runtimeEntityType.AddProperty(
                 "create_at",
@@ -42,21 +49,34 @@ namespace Api.Data.CompiledModels
                 sentinel: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
             create_at.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
-            var name = runtimeEntityType.AddProperty(
-                "name",
-                typeof(int),
-                propertyInfo: typeof(Product).GetProperty("name", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(Product).GetField("<name>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                sentinel: 0);
-            name.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+            var description = runtimeEntityType.AddProperty(
+                "description",
+                typeof(string),
+                propertyInfo: typeof(Product).GetProperty("description", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Product).GetField("<description>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            description.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var image = runtimeEntityType.AddProperty(
+                "image",
+                typeof(string),
+                propertyInfo: typeof(Product).GetProperty("image", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Product).GetField("<image>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            image.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
             var price = runtimeEntityType.AddProperty(
                 "price",
-                typeof(float),
+                typeof(decimal),
                 propertyInfo: typeof(Product).GetProperty("price", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(Product).GetField("<price>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                sentinel: 0f);
+                sentinel: 0m);
             price.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
+
+            var title = runtimeEntityType.AddProperty(
+                "title",
+                typeof(string),
+                propertyInfo: typeof(Product).GetProperty("title", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Product).GetField("<title>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            title.AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
             var update_at = runtimeEntityType.AddProperty(
                 "update_at",

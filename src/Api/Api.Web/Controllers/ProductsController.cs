@@ -25,7 +25,7 @@ namespace Api.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(Guid id)
         {
             var product = await _bus.InvokeAsync<Api.Domain.Entities.Product?>(new GetProductQuery(id));
             if (product == null)

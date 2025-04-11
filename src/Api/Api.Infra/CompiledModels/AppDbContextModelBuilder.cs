@@ -12,7 +12,7 @@ namespace Api.Data.CompiledModels
     public partial class AppDbContextModel
     {
         private AppDbContextModel()
-            : base(skipDetectChanges: false, modelId: new Guid("299e52fe-27b6-4afe-b106-5a67c726ec27"), entityTypeCount: 4)
+            : base(skipDetectChanges: false, modelId: new Guid("e8e95630-e4c8-439c-9271-8f4feb7724c5"), entityTypeCount: 4)
         {
         }
 
@@ -23,8 +23,8 @@ namespace Api.Data.CompiledModels
             var sale = SaleEntityType.Create(this);
             var saleItem = SaleItemEntityType.Create(this);
 
-            SaleItemEntityType.CreateForeignKey1(saleItem, sale);
-            SaleItemEntityType.CreateForeignKey2(saleItem, product);
+            SaleItemEntityType.CreateForeignKey1(saleItem, product);
+            SaleItemEntityType.CreateForeignKey2(saleItem, sale);
 
             CustomerEntityType.CreateAnnotations(customer);
             ProductEntityType.CreateAnnotations(product);
@@ -33,6 +33,7 @@ namespace Api.Data.CompiledModels
 
             AddAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
             AddAnnotation("ProductVersion", "9.0.3");
+            AddAnnotation("Relational:DefaultSchema", "shop");
             AddAnnotation("Relational:MaxIdentifierLength", 63);
         }
     }

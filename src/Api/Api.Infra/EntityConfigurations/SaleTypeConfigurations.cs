@@ -13,7 +13,7 @@ namespace Api.Data.EntityConfigurations
             public void Configure(EntityTypeBuilder<Sale> builder)
             {
                 builder.ToTable("sales", "shop");
-                builder.HasMany(s => s.sale_items).WithOne(s => s.sale).HasForeignKey(s => s.sale_id);
+                builder.HasMany(s => s.items).WithOne(s => s.sale).HasForeignKey(s => s.sale_id);
 
             }
         }
@@ -25,9 +25,10 @@ namespace Api.Data.EntityConfigurations
                 builder.ToTable("sales_items", "shop");
                 builder.Property(s => s.product_id).IsRequired();
                 builder.Property(s => s.sale_id).IsRequired();
-                builder.Property(s => s.price).IsRequired();
+                builder.Property(s => s.discount).IsRequired();
+                builder.Property(s => s.unit_price).IsRequired();
                 builder.Property(s => s.quantity).IsRequired();
-                builder.HasOne(s => s.sale).WithMany(s => s.sale_items).HasForeignKey(s => s.id);
+                builder.HasOne(s => s.sale).WithMany(s => s.items).HasForeignKey(s => s.sale_id);
                 builder.HasOne(s => s.product).WithMany(s => s.sale_items).HasForeignKey(s => s.product_id);
 
             }

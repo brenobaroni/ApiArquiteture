@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Api.Domain.Entities
+﻿namespace Api.Domain.Entities
 {
     public class Product : BaseData
     {
-        public int name { get; set; }
-        public float price { get; set; }
+        public string title { get; set; }
+        public decimal price { get; set; }
+        public string description { get; set; }
+        public string category { get; set; }
+        public string image { get; set; }
 
         public virtual ICollection<SaleItem> sale_items { get; set; } = new List<SaleItem>();
     }

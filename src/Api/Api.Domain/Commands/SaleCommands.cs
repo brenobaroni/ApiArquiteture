@@ -1,4 +1,6 @@
 using FluentValidation;
+using System;
+using System.Collections.Generic;
 
 namespace Api.Domain.Commands
 {
@@ -6,9 +8,12 @@ namespace Api.Domain.Commands
     {
         public CreateSaleValidator()
         {
-            RuleFor(x => x.customer_id).NotEmpty().WithMessage("Customer ID is required.");
-            RuleFor(x => x.items).NotEmpty().WithMessage("At least one item is required.");
-            RuleForEach(x => x.items).SetValidator(new CreateSaleItemValidator());
+            RuleFor(x => x.SaleNumber).NotEmpty().WithMessage("Sale number is required.");
+            RuleFor(x => x.SaleDate).NotEmpty().WithMessage("Sale date is required.");
+            RuleFor(x => x.CustomerId).NotEmpty().WithMessage("Customer ID is required.");
+            RuleFor(x => x.BranchId).NotEmpty().WithMessage("Branch ID is required.");
+            RuleFor(x => x.Items).NotEmpty().WithMessage("At least one item is required.");
+            RuleForEach(x => x.Items).SetValidator(new CreateSaleItemValidator());
         }
     }
 
@@ -16,56 +21,57 @@ namespace Api.Domain.Commands
     {
         public CreateSaleItemValidator()
         {
-            RuleFor(x => x.product_id).NotEmpty().WithMessage("Product ID is required.");
-            RuleFor(x => x.quantity).NotEmpty().WithMessage("Quantity is required.");
-            RuleFor(x => x.quantity).LessThanOrEqualTo(20).WithMessage("Cannot sell more than 20 identical items.");
-            RuleFor(x => x.price).NotEmpty().WithMessage("Price is required.");
-            RuleFor(x => x.price).GreaterThan(0).WithMessage("Price must be greater than zero.");
+            RuleFor(x => x.ProductId).NotEmpty().WithMessage("Product ID is required.");
+            RuleFor(x => x.Quantity).NotEmpty().WithMessage("Quantity is required.");
+            RuleFor(x => x.Quantity).LessThanOrEqualTo(20).WithMessage("Cannot sell more than 20 identical items.");
+            RuleFor(x => x.UnitPrice).NotEmpty().WithMessage("Unit price is required.");
+            RuleFor(x => x.UnitPrice).GreaterThan(0).WithMessage("Unit price must be greater than zero.");
         }
     }
 
     public record class CreateSaleCommand
     {
-        public int customer_id { get; init; }
-        public List<CreateSaleItemCommand> items { get; init; } = new List<CreateSaleItemCommand>()!;
+        public string SaleNumber { get; init; }
+        public DateTime SaleDate { get; init; }
+        public Guid CustomerId { get; init; } = Guid.NewGuid();
+        public Guid BranchId { get; init; } = Guid.NewGuid();
+        public List<CreateSaleItemCommand> Items { get; init; } = new List<CreateSaleItemCommand>();
     }
 
-    public record CreateSaleItemCommand
+    public record class CreateSaleItemCommand
     {
-        public int id { get; set; }
-        public int product_id { get; set; }
-        public int quantity { get; set; }
-        public float price { get; set; }
-
-
-        public float CalculateDiscount()
-        {
-            if (quantity < 4)
-                return 0;
-
-            if (quantity > 20)
-                throw new InvalidOperationException("Cannot sell more than 20 identical items");
-
-            if (quantity >= 10 && quantity <= 20)
-                return price * quantity * 0.2f; // 20% discount
-
-            if (quantity >= 4)
-                return price * quantity * 0.1f; // 10% discount
-
-            return 0;
-        }
-
-        public float CalculateTotal()
-        {
-            return (price * quantity) - CalculateDiscount();
-        }
+        public Guid ProductId { get; init; }
+        public int Quantity { get; init; }
+        public decimal UnitPrice { get; init; }
     }
 
-    public record class DeleteSaleCommand(int id);
+    public record class UpdateSaleCommand
+    {
+        public Guid Id { get; init; }
+        public string SaleNumber { get; init; }
+        public DateTime SaleDate { get; init; }
+        public Guid CustomerId { get; init; }
+        public Guid BranchId { get; init; }
+        public List<UpdateSaleItemCommand> Items { get; init; } = new List<UpdateSaleItemCommand>();
+    }
+
+    public record class UpdateSaleItemCommand
+    {
+        public Guid Id { get; init; }
+        public Guid ProductId { get; init; }
+        public int Quantity { get; init; }
+        public decimal UnitPrice { get; init; }
+    }
+
+    public record class DeleteSaleCommand(Guid id);
+    public record class CancelSaleCommand(Guid id);
 }
 
 namespace Api.Domain.Queries
 {
-    public record class GetSaleQuery(int id);
+    public record class GetSaleQuery(Guid id);
     public record class GetAllSalesQuery();
-} 
+    public record class GetSalesByCustomerQuery(Guid customerId);
+    public record class GetSalesByBranchQuery(Guid branchId);
+    public record class GetSalesByDateRangeQuery(DateTime startDate, DateTime endDate);
+}
